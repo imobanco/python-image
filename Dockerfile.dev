@@ -28,8 +28,6 @@ RUN curl -sSL "https://github.com/tianon/gosu/releases/download/${GOSU_VER}/gosu
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 COPY fix-perms /usr/bin/fix-perms
 
-RUN mkdir /app/
-
 RUN groupadd --gid 5000 app_group \
  && useradd --no-log-init --uid 5000 --gid app_group app_user \
  && chown -R app_user:app_group /app/
