@@ -1,0 +1,25 @@
+name: Test builds
+
+on:
+  pull_request:
+    branchs:
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'release/**'
+
+jobs:
+  build-dev:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build dev
+        run: make dev.build
+
+  build-prod:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build prod
+        run: make prod.build
