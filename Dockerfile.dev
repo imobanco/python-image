@@ -6,6 +6,8 @@ ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR 0
 # ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 
+WORKDIR /app
+
 RUN apt-get update \
  && apt-get install --no-install-recommends --no-install-suggests -y \
     ca-certificates \
