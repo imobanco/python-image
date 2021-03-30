@@ -35,4 +35,3 @@ RUN groupadd --gid 5000 app_group \
 CMD ["/bin/bash"]
 ENTRYPOINT ["entrypoint.sh"]
 
-USER app_user:app_group

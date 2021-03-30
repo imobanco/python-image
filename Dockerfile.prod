@@ -19,4 +19,3 @@ RUN groupadd --gid 5000 app_group \
  && useradd --no-log-init --uid 5000 --gid app_group app_user \
  && chown -R app_user /app/
 
-USER app_user
