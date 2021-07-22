@@ -6,7 +6,9 @@ ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR 0
 # ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 
-# WORKDIR /home/app_user
+ENV USER app_user
+
+WORKDIR /home/app_user
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --no-install-suggests -y \
@@ -15,20 +17,6 @@ RUN apt-get update \
  && apt-get -y clean  \
  && rm -rf /var/lib/apt/lists/*
 
-# Install gosu
-# ARG GOSU_VER=1.10
-# ARG GOSU_ARCH=amd64
-# RUN curl -sSL "https://github.com/tianon/gosu/releases/download/${GOSU_VER}/gosu-${GOSU_ARCH}" >/usr/bin/gosu \
-# && chmod 755 /usr/bin/gosu \
-# && gosu nobody true
-
-# COPY entrypoint.sh /usr/bin/entrypoint.sh
-# COPY fix-perms /usr/bin/fix-perms
-
-# RUN groupadd --gid 5000 app_group \
-# && useradd --no-log-init --uid 5000 --gid app_group app_user \
-# && chown -R app_user:app_group /app/
-
 RUN addgroup app_group \
  && adduser \
     --quiet \
@@ -36,11 +24,8 @@ RUN addgroup app_group \
     --shell /bin/bash \
     --home /home/app_user \
     --gecos "User" app_user \
-    --ingroup app_group
-
-# RUN chmod 0750 /home/app_user
+    --ingroup app_group \
+ && chmod 0700 /home/app_user \
+ && chown --recursive app_user:app_group /home/app_user
 
 CMD ["/bin/bash"]
-# ENTRYPOINT ["entrypoint.sh"]
-
-ENV USER app_user
