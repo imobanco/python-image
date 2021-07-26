@@ -25,7 +25,7 @@ jobs:
         run: podman images
 
       - name: Saves dev OCI image
-        run: podman save --format docker-archive --output /tmp/image.tar localhost/imobanco/python:dev_latest
+        run: podman save --format docker-archive --output /tmp/image.tar localhost/imobanco/python:dev-latest
 
       - name: Log in to GitHub Docker Registry
         uses: docker/login-action@v1
