@@ -46,7 +46,7 @@ jobs:
         with:
           push: true
           tags: |
-            docker.pkg.github.com/imobanco/python:dev-latest
+            localhost/imobanco/python:dev-latest
 
 #  build-prod:
 #    runs-on: ubuntu-18.04
