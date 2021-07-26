@@ -1,11 +1,14 @@
 name: Test builds
 
 on:
-  pull_request:
-    branchs:
-      - 'feature/**'
-      - 'hotfix/**'
-      - 'release/**'
+  push:
+
+#on:
+#  pull_request:
+#    branchs:
+#      - 'feature/**'
+#      - 'hotfix/**'
+#      - 'release/**'
 
 jobs:
   build-dev:
