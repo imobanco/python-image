@@ -14,21 +14,21 @@ jobs:
   build-dev:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Prints podman --version
-      - run: podman --version
+    - uses: actions/checkout@v2
+    - name: Prints podman --version
+    - run: podman --version
 
-      - name: Build Image
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: my-app
-          tags: dev-latest
-          dockerfiles: |
-            ./Containerfile.dev
+    - name: Build Image
+      id: build-image
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: my-app
+        tags: dev-latest
+        dockerfiles: |
+          ./Containerfile.dev
 
-      - name: Lista images
-        run: podman images
+    - name: Lista images
+      run: podman images
 
 #  build-prod:
 #    runs-on: ubuntu-18.04
