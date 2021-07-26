@@ -49,6 +49,7 @@ jobs:
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
+        registry: docker.pkg.github.com
         tags: ${{ steps.build-image.outputs.tags }}
 
     - name: Print image url
