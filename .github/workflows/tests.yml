@@ -45,8 +45,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          file: Containerfile.dev
           tags: |
-            localhost/imobanco/python:dev-latest
+             docker.pkg.github.com/imobanco/python:dev-latest
 
 #  build-prod:
 #    runs-on: ubuntu-18.04
