@@ -31,15 +31,15 @@ jobs:
 
     # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
     # in which case 'username' and 'password' can be omitted.
-    - name: Push To quay.io
-      id: push-to-quay
+    - name: Push to
+      id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.build-image.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
-        registry: quay.io/quay-user
-        username: quay-user
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        registry: docker.pkg.github.com
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
