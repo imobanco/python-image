@@ -10,6 +10,12 @@ on:
 #      - 'hotfix/**'
 #      - 'release/**'
 
+
+env:
+  REGISTRY_USER: quayuser
+  IMAGE_REGISTRY: quay.io
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
 jobs:
   build:
     name: Build and push image
@@ -34,7 +40,7 @@ jobs:
       with:
         username: ${{ env.REGISTRY_USER }}
         password: ${{ env.REGISTRY_PASSWORD }}
-        registry: docker.pkg.github.com
+        registry: ${{ env.IMAGE_REGISTRY }}
 
     # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
     # in which case 'username' and 'password' can be omitted.
