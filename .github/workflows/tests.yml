@@ -38,6 +38,9 @@ jobs:
         run: |
           docker load < /tmp/image.tar
 
+      - name: Lista images
+        run: docker images
+
       - name: Build OCI image
         uses: docker/build-push-action@v2
         with:
