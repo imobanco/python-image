@@ -22,6 +22,17 @@ jobs:
         # Nix Flakes doesn't work on shallow clones
         fetch-depth: 0
 
+    - name: Configura variáveis do make
+      run: |
+        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
+        echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
+      id: config
+      shell: bash
+
+    - name: Get registry
+      run: echo "${{ steps.config.outputs.REGISTRY }}"
+
     - uses: cachix/install-nix-action@v13
       with:
         install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
@@ -48,27 +59,13 @@ jobs:
 #    - run: podman info --debug
 
     - name: Faz build da imagem de dev usando podman via nix
-      run: |
-        make dev.build
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
-      shell: bash
-      id: build
-
-    - name: Set selected color
-      run: echo "::set-output name=SELECTED_COLOR::$(pwd)"
-      id: random-color-generator
-      shell: bash
-
-    - name: Get color
-      run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+      run: make dev.build
 
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
       with:
-          registry: ${{ steps.build.output.REGISTRY }}
+          registry: ${{ steps.config.output.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -78,9 +75,9 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.build.output.IMAGE_NAME }}
-        registry: ${{ steps.build.output.REGISTRY }}
-        tags: ${{ steps.build.output.IMAGE_TAG }}
+        image: ${{ steps.config.output.IMAGE_NAME }}
+        registry: ${{ steps.config.output.REGISTRY }}
+        tags: ${{ steps.config.output.IMAGE_TAG }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
