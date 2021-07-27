@@ -27,14 +27,14 @@ jobs:
       with:
         # Nix Flakes doesn't work on shallow clones
         fetch-depth: 0
-    - name: Build Image
-      id: build-image
-      uses: redhat-actions/buildah-build@v2
-      with:
-        image: ${{ github.repository }}/python
-        tags: dev-latest
-        dockerfiles: |
-          ./Containerfile.dev
+#    - name: Build Image
+#      id: build-image
+#      uses: redhat-actions/buildah-build@v2
+#      with:
+#        image: ${{ github.repository }}/python
+#        tags: dev-latest
+#        dockerfiles: |
+#          ./Containerfile.dev
 
     - uses: cachix/install-nix-action@v13
       with:
@@ -47,6 +47,7 @@ jobs:
     - run: nix flake metadata nixpkgs
     - run: nix profile install github:ES-Nix/podman-rootless/from-nixpkgs
     - run: podman --version && podman info
+    - run: make build.dev
 
 # Útil quando debugando.
     - name: Exibe metadados do podman
