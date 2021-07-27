@@ -50,10 +50,17 @@ jobs:
     - name: Faz build da imagem de dev usando podman via nix
       run: |
         make dev.build
-        echo "::set-output name=REGISTRY::$(make -s echo.registry)"
-        echo "::set-output name=IMAGE_NAME::$(make -s echo.image_name)"
-        echo "::set-output name=IMAGE_TAG::$(make -s echo.image_tag)"
+        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
+        echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
       id: build
+
+    - name: teste
+      run: echo "::set-output name=foo::$(echo foo)"
+      id: foo
+
+    - name: echo foo
+      run: echo ${{ steps.foo.output.foo }}
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
