@@ -1,5 +1,5 @@
 REGISTRY=imobanco
-IMAGE_NAME=python
+IMAGE_NAME=docker-python-image/python
 IMAGE_TAG=dev-latest
 IMAGE=$(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
 DATE:=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
