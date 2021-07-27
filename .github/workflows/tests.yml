@@ -53,11 +53,13 @@ jobs:
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
         echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
+      shell: bash
       id: build
 
     - name: Set selected color
-      run: echo "::set-output name=SELECTED_COLOR::green"
+      run: echo "::set-output name=SELECTED_COLOR::$(pwd)"
       id: random-color-generator
+      shell: bash
 
     - name: Get color
       run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
