@@ -47,7 +47,7 @@ jobs:
     - run: nix flake metadata nixpkgs
     - run: nix profile install github:ES-Nix/podman-rootless/from-nixpkgs
     - run: podman --version && podman info
-    - run: make build.dev
+    - run: make dev.build
 
 # Útil quando debugando.
     - name: Exibe metadados do podman
