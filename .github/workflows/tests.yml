@@ -41,7 +41,7 @@ jobs:
     - run: nix flake --version
     - run: nix flake metadata nixpkgs
     #- run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
-    - run: apt-get purge -y podman
+    - run: sudo apt-get purge -y podman
     - run: podman --version || echo podman not installed
     - run: nix profile install nixpkgs#podman
     - run: podman --version
