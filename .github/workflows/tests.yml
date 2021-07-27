@@ -55,12 +55,13 @@ jobs:
         echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
       id: build
 
-    - name: teste
-      run: echo "::set-output name=foo::$(echo foo)"
-      id: foo
+    - name: Set selected color
+      run: echo '::set-output name=SELECTED_COLOR::green'
+      id: random-color-generator
 
-    - name: echo foo
-      run: echo ${{ steps.foo.output.foo }}
+    - name: Get color
+      run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
