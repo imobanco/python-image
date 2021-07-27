@@ -12,10 +12,10 @@ on:
 #      - 'release/**'
 
 
-env:
-  REGISTRY_USER: imobanco
-  IMAGE_REGISTRY: quay.io
-  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+#env:
+#  REGISTRY_USER: imobanco
+#  IMAGE_REGISTRY: quay.io
+#  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
 jobs:
   build:
@@ -46,7 +46,8 @@ jobs:
     - run: nix flake --version
     - run: nix flake metadata nixpkgs
     - run: nix profile install github:ES-Nix/podman-rootless/from-nixpkgs
-    - run: podman --version && podman info
+    - run: podman --version
+    - run: podman info
 
     - name: Faz build da imagem de dev usando podman via nix
       run: make dev.build
