@@ -4,6 +4,14 @@ IMAGE_TAG=dev-latest
 IMAGE=$(GITHUB_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
 CONTAINERFILE=Containerfile
 
+echo.registry:
+	echo $(GITHUB_REGISTRY)
+
+echo.image_name:
+	echo $(IMAGE_NAME)
+
+echo.image_tag:
+	echo $(IMAGE_TAG)
 
 dev.build:
 	podman build --file Containerfile.dev --tag $(IMAGE) .

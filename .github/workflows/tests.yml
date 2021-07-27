@@ -48,12 +48,17 @@ jobs:
 #    - run: podman info --debug
 
     - name: Faz build da imagem de dev usando podman via nix
-      run: make dev.build
+      run: |
+        make dev.build
+        echo "::set-output name=REGISTRY::$(make -s echo.registry)"
+        echo "::set-output name=IMAGE_NAME::$(make -s echo.image_name)"
+        echo "::set-output name=IMAGE_TAG::$(make -s echo.image_tag)"
+      id: build
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
       with:
-          registry: ghcr.io
+          registry: ${{ steps.build.output.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,9 +68,9 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: imobanco/python
-        registry: ghcr.io
-        tags: dev-latest
+        image: ${{ steps.build.output.IMAGE_NAME }}
+        registry: ${{ steps.build.output.REGISTRY }}
+        tags: ${{ steps.build.output.IMAGE_TAG }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
