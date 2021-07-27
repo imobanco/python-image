@@ -47,6 +47,8 @@ jobs:
     - run: nix flake metadata nixpkgs
     - run: nix profile install github:ES-Nix/podman-rootless/from-nixpkgs
     - run: podman --version && podman info
+
+    - name: Faz build da imagem de dev usando podman via nix
     - run: make dev.build
 
 # Útil quando debugando.
@@ -69,7 +71,7 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.build-image.outputs.image }}
+        image: localhost/imobanco/python:dev-latest
         registry: docker.pkg.github.com
         tags: ${{ steps.build-image.outputs.tags }}
 
