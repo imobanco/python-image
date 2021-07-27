@@ -1,16 +1,15 @@
 name: Test builds
 
-# Útil quando debugando.
-on:
-  push:
-
+## Útil quando debugando.
 #on:
-#  pull_request:
-#    branchs:
-#      - 'feature/**'
-#      - 'hotfix/**'
-#      - 'release/**'
+#  push:
 
+on:
+  pull_request:
+    branchs:
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'release/**'
 
 jobs:
   build:
@@ -39,7 +38,7 @@ jobs:
           experimental-features = nix-command flakes ca-references ca-derivations
           sandbox = false
     - run: nix flake --version
-    - run: nix flake metadata nixpkgs
+#    - run: nix flake metadata nixpkgs
     - run: sudo apt-get purge -y podman containers-image containers-common
     - run: sudo apt-get autoremove --purge
     - run: sudo apt-get -y clean
@@ -52,10 +51,6 @@ jobs:
 
     - name: Faz build da imagem de dev usando podman via nix
       run: make dev.build
-
-# Útil quando debugando.
-#    - name: Lista images
-#      run: podman images
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
