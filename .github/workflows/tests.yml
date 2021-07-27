@@ -56,7 +56,7 @@ jobs:
       id: build
 
     - name: Set selected color
-      run: echo '::set-output name=SELECTED_COLOR::green'
+      run: echo "::set-output name=SELECTED_COLOR::green"
       id: random-color-generator
 
     - name: Get color
