@@ -41,6 +41,8 @@ jobs:
     - run: nix flake --version
     - run: nix flake metadata nixpkgs
     #- run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
+    - run: apt-get purge -y podman
+    - run: podman --version || echo podman not installed
     - run: nix profile install nixpkgs#podman
     - run: podman --version
     - run: podman info
@@ -49,11 +51,8 @@ jobs:
       run: make dev.build
 
 # Útil quando debugando.
-    - name: Exibe metadados do podman
-      run: podman info
-
-    - name: Lista images
-      run: podman images
+#    - name: Lista images
+#      run: podman images
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
