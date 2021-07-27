@@ -40,12 +40,12 @@ jobs:
           sandbox = false
     - run: nix flake --version
     - run: nix flake metadata nixpkgs
+    - run: sudo apt-get purge -y podman containers-image containers-common && sudo apt-get autoremove --purge && apt-get -y clean
     #- run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
-    - run: sudo apt-get purge -y podman
     - run: podman --version || echo podman not installed
     - run: nix profile install nixpkgs#podman
     - run: podman --version
-    - run: podman info
+    - run: podman info --debug
 
     - name: Faz build da imagem de dev usando podman via nix
       run: make dev.build
