@@ -71,7 +71,7 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: imobanco/python
+        image: imobanco/docker-python-image/python
         registry: docker.pkg.github.com
         tags: dev-latest
     - name: Print image url
