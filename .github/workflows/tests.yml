@@ -40,7 +40,7 @@ jobs:
           sandbox = false
     - run: nix flake --version
     - run: nix flake metadata nixpkgs
-    - run: sudo apt-get purge -y podman containers-image containers-common && sudo apt-get autoremove --purge && apt-get -y clean
+    - run: sudo apt-get purge -y podman containers-image containers-common && sudo apt-get autoremove --purge && sudo apt-get -y clean
     #- run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
     - run: podman --version || echo podman not installed
     - run: nix profile install nixpkgs#podman
