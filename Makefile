@@ -1,4 +1,4 @@
-REGISTRY=imobanco/docker-python-image
+REGISTRY=imobanco
 IMAGE_NAME=python
 IMAGE_TAG=dev-latest
 IMAGE=$(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
