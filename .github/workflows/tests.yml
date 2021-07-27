@@ -73,6 +73,8 @@ jobs:
         image: imobanco/docker-python-image/python
         registry: docker.pkg.github.com
         tags: dev-latest
+        extra-args: |
+          --format oci
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 

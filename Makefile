@@ -8,7 +8,7 @@ CONTAINERFILE=Containerfile
 
 
 dev.build:
-	podman build --file Containerfile.dev --format v2s1 --tag $(IMAGE) --label org.opencontainers.image.created=$(DATE) --label org.opencontainers.image.revision=$(GIT_REVISION) .
+	podman build --file Containerfile.dev --format oci --tag $(IMAGE) --label org.opencontainers.image.created=$(DATE) --label org.opencontainers.image.revision=$(GIT_REVISION) .
 
 prod.build:
 	docker build -f Dockerfile.prod .
