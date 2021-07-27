@@ -12,11 +12,6 @@ on:
 #      - 'release/**'
 
 
-#env:
-#  REGISTRY_USER: imobanco
-#  IMAGE_REGISTRY: quay.io
-#  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-
 jobs:
   build:
     name: Build and push image
