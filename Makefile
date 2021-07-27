@@ -1,7 +1,7 @@
-REGISTRY=imobanco
-IMAGE_NAME=python
+GITHUB_REGISTRY=ghcr.io
+IMAGE_NAME=imobanco/python
 IMAGE_TAG=dev-latest
-IMAGE=$(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
+IMAGE=$(GITHUB_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
 CONTAINERFILE=Containerfile
 
 
@@ -10,4 +10,9 @@ dev.build:
 
 prod.build:
 	docker build -f Dockerfile.prod .
-	
+
+login.github_registry:
+	podman login $(GITHUB_REGISTRY)
+
+logout.github_registry:
+	podman logout $(GITHUB_REGISTRY)
