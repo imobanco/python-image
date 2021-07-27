@@ -43,9 +43,11 @@ jobs:
     - run: sudo apt-get purge -y podman containers-image containers-common
     - run: sudo apt-get autoremove --purge
     - run: sudo apt-get -y clean
-    #- run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
     - run: podman --version || echo podman not installed
-    - run: nix profile install nixpkgs#podman
+    - run: ls -al ~/.config/containers/
+    - run: rm ls -al ~/.config/containers/*
+    - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
+    #- run: nix profile install nixpkgs#podman
     - run: sudo apt-get update && sudo apt-get install -y uidmap
     - run: podman --version
     - run: podman info --debug
