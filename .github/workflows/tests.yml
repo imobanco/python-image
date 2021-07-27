@@ -44,8 +44,6 @@ jobs:
     - run: sudo apt-get autoremove --purge
     - run: sudo apt-get -y clean
     - run: podman --version || echo podman not installed
-    - run: ls -al ~/.config/configstore
-    #- run: rm ls -al ~/.config/
     - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
     #- run: nix profile install nixpkgs#podman
     - run: sudo apt-get update && sudo apt-get install -y uidmap
@@ -66,17 +64,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-#    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
-#    # in which case 'username' and 'password' can be omitted.
-#    - name: Push to
-#      id: push-to
-#      uses: redhat-actions/push-to-registry@v2
-#      with:
-#        image: imobanco/docker-python-image/python
-#        registry: docker.pkg.github.com
-#        tags: dev-latest
-#    - name: Print image url
-#      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
+    # in which case 'username' and 'password' can be omitted.
+    - name: Push to
+      id: push-to
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: imobanco/docker-python-image/python
+        registry: docker.pkg.github.com
+        tags: dev-latest
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
 #  build-prod:
 #    runs-on: ubuntu-18.04
