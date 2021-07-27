@@ -44,8 +44,8 @@ jobs:
     - run: sudo apt-get autoremove --purge
     - run: sudo apt-get -y clean
     - run: podman --version || echo podman not installed
-    #- run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
-    - run: nix profile install nixpkgs#podman
+    - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
+    #- run: nix profile install nixpkgs#podman
     - run: sudo apt-get update && sudo apt-get install -y uidmap
     - run: podman --version
     - run: podman info --debug
@@ -76,10 +76,10 @@ jobs:
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
-#  build-prod:
-#    runs-on: ubuntu-18.04
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Build prod
-#        run: make prod.build
+  build-prod:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build prod
+        run: make prod.build
