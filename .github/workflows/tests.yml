@@ -74,7 +74,7 @@ jobs:
         registry: docker.pkg.github.com
         tags: dev-latest
         extra-args: |
-          --format oci
+          --format docker
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
