@@ -63,7 +63,7 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: imobanco/python
+        image: python
         registry: ghcr.io
         tags: dev-latest
     - name: Print image url
