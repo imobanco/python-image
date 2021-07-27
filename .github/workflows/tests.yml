@@ -40,7 +40,7 @@ jobs:
           sandbox = false
     - run: nix flake --version
     - run: nix flake metadata nixpkgs
-    - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d/from-nixpkgs
+    - run: nix profile install github:ES-Nix/podman-rootless/from-nixpkgs/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
     - run: podman --version
     - run: podman info
 
