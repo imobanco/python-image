@@ -91,3 +91,6 @@ jobs:
         tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+
+    - name: Lista imagens
+      run: podman images
