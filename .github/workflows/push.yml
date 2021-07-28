@@ -1,4 +1,5 @@
-name: Faz push
+name: Faz push das imagens
+
 
 on:
   pull_request:
@@ -9,7 +10,7 @@ on:
 
 jobs:
   push:
-    name: Push das imagens OCI
+    name: Push
     runs-on: ubuntu-20.04
 
     steps:
@@ -18,19 +19,55 @@ jobs:
         # Nix Flakes doesn't work on shallow clones
         fetch-depth: 0
 
-    - name: Coleta variáveis de ambiente
+    - uses: cachix/install-nix-action@v13
+      with:
+        install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
+        install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
+        extra_nix_config: |
+          experimental-features = nix-command flakes ca-references ca-derivations
+          sandbox = false
+    - run: nix flake --version
+#    - run: nix flake metadata nixpkgs
+
+    # Remove podman via apt-get
+    - run: |
+        sudo apt-get purge -y podman containers-image containers-common
+        sudo apt-get autoremove --purge
+        sudo apt-get -y clean
+        podman --version || echo podman not installed
+
+    # Instala podman usando nix
+    - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
+    # Não funciona pois não vem com os arquivos de configuração
+#    - run: nix profile install nixpkgs#podman
+    - run: |
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends --no-install-suggests -y uidmap
+    - run: podman --version
+#    - run: podman info --debug
+
+    - name: Faz build da imagem de dev usando podman via nix
       run: |
+        make build
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
         echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
+      shell: bash
+      id: dev-build
+
+    - name: Faz build da imagem de prod usando podman via nix
+      run: |
+        make prod.build
+        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
       shell: bash
-      id: environment
+      id: prod-build
 
     - name: Log in em Quay.io para push
       uses: redhat-actions/podman-login@v1
       with:
-          registry: ${{ steps.environment.outputs.REGISTRY }}
+          registry: ${{ steps.dev-build.outputs.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -40,18 +77,17 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.environment.outputs.IMAGE_NAME }}
-        registry: ${{ steps.environment.outputs.REGISTRY }}
-        tags: ${{ steps.environment.outputs.IMAGE_TAG_DEV }}
-
+        image: ${{ steps.dev-build.outputs.IMAGE_NAME }}
+        registry: ${{ steps.dev-build.outputs.REGISTRY }}
+        tags: ${{ steps.dev-build.outputs.IMAGE_TAG_DEV }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
     - name: Faz push para registry da imagem de prod
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.environment.outputs.IMAGE_NAME }}
-        registry: ${{ steps.environment.outputs.REGISTRY }}
-        tags: ${{ steps.environment.outputs.IMAGE_TAG_PROD }}
+        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
+        registry: ${{ steps.prod-build.outputs.REGISTRY }}
+        tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
