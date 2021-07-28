@@ -13,7 +13,7 @@ pull:
 	podman pull $(IMAGE)
 
 prod.build:
-	docker build -f Dockerfile.prod .
+	podman build --file Containerfile.prod .
 
 login.github_registry:
 	podman login $(GITHUB_REGISTRY)

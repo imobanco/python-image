@@ -43,7 +43,9 @@ jobs:
     - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
     # Não funciona pois não vem com os arquivos de configuração
 #    - run: nix profile install nixpkgs#podman
-    - run: sudo apt-get update && sudo apt-get install -y uidmap
+    - run: |
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends --no-install-suggests -y uidmap
     - run: podman --version
 #    - run: podman info --debug
 
@@ -55,6 +57,15 @@ jobs:
         echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
       shell: bash
       id: build
+
+    - name: Faz build da imagem de prod usando podman via nix
+      run: |
+        make prod.build
+        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
+        echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
+      shell: bash
+      id: prod-build
 
     - name: Log in to Quay.io
       uses: redhat-actions/podman-login@v1
