@@ -53,7 +53,7 @@ jobs:
       run: |
         make build
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME_DEV::$(make print-IMAGE_NAME_DEV)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
       shell: bash
       id: dev-build
@@ -62,7 +62,7 @@ jobs:
       run: |
         make prod.build
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME_PROD::$(make print-IMAGE_NAME_PROD)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
       shell: bash
       id: prod-build
@@ -80,7 +80,7 @@ jobs:
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.dev-build.outputs.IMAGE_NAME_DEV }}
+        image: ${{ steps.dev-build.outputs.IMAGE_NAME }}
         registry: ${{ steps.dev-build.outputs.REGISTRY }}
         tags: ${{ steps.dev-build.outputs.IMAGE_TAG_DEV }}
     - name: Print image url
@@ -89,7 +89,7 @@ jobs:
     - name: Teste
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.prod-build.outputs.IMAGE_NAME_PROD }}
+        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
         registry: ${{ steps.prod-build.outputs.REGISTRY }}
         tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
     - name: Print image url
