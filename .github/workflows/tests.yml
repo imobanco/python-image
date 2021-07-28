@@ -68,6 +68,9 @@ jobs:
       id: prod-build
 
     - name: Log in em Quay.io para push
+      run: podman images
+
+    - name: Log in em Quay.io para push
       uses: redhat-actions/podman-login@v1
       with:
           registry: ${{ steps.dev-build.outputs.REGISTRY }}
