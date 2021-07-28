@@ -22,6 +22,13 @@ jobs:
       shell: bash
       id: environment
 
+    - name: Log in em Quay.io para push
+      uses: redhat-actions/podman-login@v1
+      with:
+          registry: ${{ steps.environment.outputs.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
     # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
     # in which case 'username' and 'password' can be omitted.
     - name: Faz push para registry da imagem de dev
@@ -31,6 +38,7 @@ jobs:
         image: ${{ steps.environment.outputs.IMAGE_NAME }}
         registry: ${{ steps.environment.outputs.REGISTRY }}
         tags: ${{ steps.environment.outputs.IMAGE_TAG_DEV }}
+
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
