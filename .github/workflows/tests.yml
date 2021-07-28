@@ -86,14 +86,10 @@ jobs:
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
-    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
-    # in which case 'username' and 'password' can be omitted.
-    - name: Push para registry imagem de dev
-      id: push-to
-      uses: redhat-actions/push-to-registry@v2
+    - name: Teste
       with:
-        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
+        image: ${{ steps.prod-build.outputs.IMAGE_NAME_PROD }}
         registry: ${{ steps.prod-build.outputs.REGISTRY }}
-        tags: ${{ steps.prod-build.outputs.IMAGE_TAG }}
+        tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
