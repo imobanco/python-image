@@ -10,7 +10,7 @@ CONTAINERFILE_PROD=Containerfile.prod
 print-%  : ; @echo $($*)
 
 build:
-	podman build --file $(CONTAINERFILE) --tag $(IMAGE_DEV) .
+	podman build --file $(CONTAINERFILE_DEV) --tag $(IMAGE_DEV) .
 
 pull:
 	podman pull $(IMAGE_DEV)
