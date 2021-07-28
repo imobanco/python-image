@@ -2,11 +2,9 @@ name: Faz push das imagens
 
 
 on:
-  pull_request:
+  push:
     branchs:
-      - 'feature/**'
-      - 'hotfix/**'
-      - 'release/**'
+      - master
 
 jobs:
   push:
