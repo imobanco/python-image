@@ -9,10 +9,15 @@ on:
 
 jobs:
   push:
-    name: Push
+    name: Push das imagens OCI
     runs-on: ubuntu-20.04
 
     steps:
+    - uses: actions/checkout@v2
+      with:
+        # Nix Flakes doesn't work on shallow clones
+        fetch-depth: 0
+
     - name: Coleta variáveis de ambiente
       run: |
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
