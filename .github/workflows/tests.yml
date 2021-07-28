@@ -53,35 +53,47 @@ jobs:
       run: |
         make dev.build
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
+        echo "::set-output name=IMAGE_NAME_DEV::$(make print-IMAGE_NAME_DEV)"
+        echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
       shell: bash
-      id: build
+      id: dev-build
 
     - name: Faz build da imagem de prod usando podman via nix
       run: |
         make prod.build
         echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG::$(make print-IMAGE_TAG)"
+        echo "::set-output name=IMAGE_NAME_PROD::$(make print-IMAGE_NAME_PROD)"
+        echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
       shell: bash
       id: prod-build
 
-    - name: Log in to Quay.io
+    - name: Log in em Quay.io para push
       uses: redhat-actions/podman-login@v1
       with:
-          registry: ${{ steps.build.outputs.REGISTRY }}
+          registry: ${{ steps.dev-build.outputs.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
     # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
     # in which case 'username' and 'password' can be omitted.
-    - name: Push to
+    - name: Push para registry imagem de dev
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.build.outputs.IMAGE_NAME }}
-        registry: ${{ steps.build.outputs.REGISTRY }}
-        tags: ${{ steps.build.outputs.IMAGE_TAG }}
+        image: ${{ steps.dev-build.outputs.IMAGE_NAME_DEV }}
+        registry: ${{ steps.dev-build.outputs.REGISTRY }}
+        tags: ${{ steps.dev-build.outputs.IMAGE_TAG_DEV }}
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+
+    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
+    # in which case 'username' and 'password' can be omitted.
+    - name: Push para registry imagem de dev
+      id: push-to
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
+        registry: ${{ steps.prod-build.outputs.REGISTRY }}
+        tags: ${{ steps.prod-build.outputs.IMAGE_TAG }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
