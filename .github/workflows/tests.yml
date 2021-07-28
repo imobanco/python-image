@@ -85,11 +85,3 @@ jobs:
         tags: ${{ steps.build.outputs.IMAGE_TAG }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
-
-  build-prod:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build prod
-        run: make prod.build
