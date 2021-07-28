@@ -15,7 +15,7 @@ build:
 pull:
 	podman pull $(IMAGE_DEV)
 
-prod.build:
+build.prod:
 	podman build --file $(CONTAINERFILE_PROD) --tag $(IMAGE_PROD) .
 
 login.github_registry:
