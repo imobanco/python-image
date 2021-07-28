@@ -1,0 +1,39 @@
+name: Test builds
+
+## Útil quando debugando.
+#on:
+#  push:
+
+on:
+  pull_request:
+    branchs:
+      - 'feature/**'
+      - 'hotfix/**'
+      - 'release/**'
+
+jobs:
+  build:
+    name: Push
+    runs-on: ubuntu-20.04
+
+    steps:
+    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
+    # in which case 'username' and 'password' can be omitted.
+    - name: Faz push para registry da imagem de dev
+      id: push-to
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.dev-build.outputs.IMAGE_NAME }}
+        registry: ${{ steps.dev-build.outputs.REGISTRY }}
+        tags: ${{ steps.dev-build.outputs.IMAGE_TAG_DEV }}
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+
+    - name: Faz push para registry da imagem de prod
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
+        registry: ${{ steps.prod-build.outputs.REGISTRY }}
+        tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
+    - name: Print image url
+      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"

@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    name: Build and push image
+    name: Build
     runs-on: ubuntu-20.04
 
     steps:
@@ -66,9 +66,6 @@ jobs:
         echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
       shell: bash
       id: prod-build
-
-    - name: Log in em Quay.io para push
-      run: podman images
 
     - name: Log in em Quay.io para push
       uses: redhat-actions/podman-login@v1
