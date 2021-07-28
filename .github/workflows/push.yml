@@ -1,9 +1,5 @@
 name: Faz push
 
-## Útil quando debugando.
-#on:
-#  push:
-
 on:
   pull_request:
     branchs:
@@ -17,23 +13,32 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+    - name: Coleta variáveis de ambiente
+      run: |
+        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
+        echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
+        echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
+      shell: bash
+      id: environment
+
     # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
     # in which case 'username' and 'password' can be omitted.
     - name: Faz push para registry da imagem de dev
       id: push-to
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.dev-build.outputs.IMAGE_NAME }}
-        registry: ${{ steps.dev-build.outputs.REGISTRY }}
-        tags: ${{ steps.dev-build.outputs.IMAGE_TAG_DEV }}
+        image: ${{ steps.environment.outputs.IMAGE_NAME }}
+        registry: ${{ steps.environment.outputs.REGISTRY }}
+        tags: ${{ steps.environment.outputs.IMAGE_TAG_DEV }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
     - name: Faz push para registry da imagem de prod
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
-        registry: ${{ steps.prod-build.outputs.REGISTRY }}
-        tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
+        image: ${{ steps.environment.outputs.IMAGE_NAME }}
+        registry: ${{ steps.environment.outputs.REGISTRY }}
+        tags: ${{ steps.environment.outputs.IMAGE_TAG_PROD }}
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
