@@ -87,6 +87,7 @@ jobs:
       run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
 
     - name: Teste
+      uses: redhat-actions/push-to-registry@v2
       with:
         image: ${{ steps.prod-build.outputs.IMAGE_NAME_PROD }}
         registry: ${{ steps.prod-build.outputs.REGISTRY }}
