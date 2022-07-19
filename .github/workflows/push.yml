@@ -63,7 +63,7 @@ jobs:
       id: prod-build
 
     - name: Log in em Quay.io para push
-      uses: redhat-actions/podman-login@v1
+      uses: redhat-actions/podman-login@v1.4
       with:
           registry: ${{ steps.dev-build.outputs.REGISTRY }}
           username: ${{ github.actor }}
