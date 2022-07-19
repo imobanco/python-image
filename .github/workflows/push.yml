@@ -41,6 +41,7 @@ jobs:
     - run: |
         sudo apt-get update
         sudo apt-get install --no-install-recommends --no-install-suggests -y uidmap
+        sudo chown "$(id -u)":"$(id -g)" /nix/store/*-shadow-4.*.*/bin/new?idmap
         newuidmap || true
         newgidmap || true
     - run: podman --version
