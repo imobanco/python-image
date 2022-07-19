@@ -35,7 +35,7 @@ jobs:
         podman --version || echo podman not installed
 
     # Instala podman usando nix
-    - run: nix profile install github:ES-Nix/podman-rootless/6a498059fc8a120ecc2f0d8e3712f43256c4ee1d
+    - run: nix profile install github:ES-Nix/podman-rootless/136a0ad03df69baa0a810282591f4c962d1c626f
     # Não funciona pois não vem com os arquivos de configuração
 #    - run: nix profile install nixpkgs#podman
     - run: |
