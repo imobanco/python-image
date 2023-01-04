@@ -50,7 +50,7 @@ jobs:
     - name: Faz build da imagem de dev usando podman via nix
       run: |
         make build
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=REGISTRY::$(make print-IMAGE_REGISTRY)"
         echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
       shell: bash
@@ -59,7 +59,7 @@ jobs:
     - name: Faz build da imagem de prod usando podman via nix
       run: |
         make build.prod
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
+        echo "::set-output name=REGISTRY::$(make print-IMAGE_REGISTRY)"
         echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
         echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
       shell: bash

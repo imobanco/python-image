@@ -1,25 +1,42 @@
-GITHUB_REGISTRY=ghcr.io
+CURRENT_DIR=$(shell basename $(CURRENT_PWD))
+CURRENT_PWD=$(shell pwd)
+DATE:=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+GIT_REVISION:=$(shell git rev-parse --short HEAD)
+
+IMAGE_REGISTRY=ghcr.io
 IMAGE_NAME=imobanco/python
-IMAGE_TAG_DEV=dev-latest
-IMAGE_TAG_PROD=prod-latest
-IMAGE_DEV=$(GITHUB_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG_DEV)
-IMAGE_PROD=$(GITHUB_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG_PROD)
-CONTAINERFILE_DEV=Containerfile.dev
+IMAGE_TAG=latest
+IMAGE=$(IMAGE_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
+CONTAINERFILE=Containerfile.dev
 CONTAINERFILE_PROD=Containerfile.prod
 
 print-%  : ; @echo $($*)
 
 build:
-	podman build --file $(CONTAINERFILE_DEV) --tag $(IMAGE_DEV) .
+	$(COMPOSER) build --file $(CONTAINERFILE) --tag $(IMAGE) --label org.opencontainers.image.created=$(DATE) --label org.opencontainers.image.revision=$(GIT_REVISION) $(args) .
 
-pull:
-	podman pull $(IMAGE_DEV)
+pull: login.registry
+	podman pull $(IMAGE)
 
-build.prod:
-	podman build --file $(CONTAINERFILE_PROD) --tag $(IMAGE_PROD) .
+push.to.registry:
+	podman push $(IMAGE)
 
-login.github_registry:
-	podman login $(GITHUB_REGISTRY)
+login.IMAGE_REGISTRY:
+	podman login $(IMAGE_REGISTRY)
 
-logout.github_registry:
-	podman logout $(GITHUB_REGISTRY)
+logout.IMAGE_REGISTRY:
+	podman logout $(IMAGE_REGISTRY)
+
+build.and.push:
+	make build
+	make login.registry.stdin
+	make push.to.registry
+
+login.registry:
+	podman login $(IMAGE_REGISTRY)
+
+logout.registry:
+	podman logout $(IMAGE_REGISTRY)
+
+login.registry.stdin:
+	@echo $(PASSWORD)  | podman login --username $(USERNAME) --password-stdin $(IMAGE_REGISTRY)
