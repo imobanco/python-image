@@ -1,2 +1,12 @@
-# docker-python-image
-Nosso repositório de imagens Python!
+# Resumo
+Esse repositório possui o maquinário necessário para construir e dar push em imagens python.
+
+> https://hub.docker.com/_/python
+
+No momento estão sendo construídas as imagens/versões:
+- imobanco/python:3.8
+- imobanco/python:3.9
+- imobanco/python:3.10
+- imobanco/python:3.11
+
+> todas as imagens utilizam a versão slim-buster

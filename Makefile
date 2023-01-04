@@ -7,8 +7,7 @@ IMAGE_REGISTRY=ghcr.io
 IMAGE_NAME=imobanco/python
 IMAGE_TAG=latest
 IMAGE=$(IMAGE_REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
-CONTAINERFILE=Containerfile.dev
-CONTAINERFILE_PROD=Containerfile.prod
+CONTAINERFILE=Containerfile_3.8
 
 print-%  : ; @echo $($*)
 

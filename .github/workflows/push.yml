@@ -1,11 +1,9 @@
 name: Faz push das imagens
 
-
 on:
   push:
     branchs:
       - master
-
 
 jobs:
   push:
@@ -45,12 +43,23 @@ jobs:
     - run: |
         nix profile install github:ES-Nix/podman-rootless/83ff27be5616e3029c2aec2de595f86da081e857#podman
         podman --version
-    
-    - name: Faz build e push da imagem de dev usando podman via nix
-      run: make build.and.push IMAGE_TAG=dev-latest USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+  
+    - name: Faz build e push da imagem 3.8
+      run: |
+        make build.and.push IMAGE_TAG=3.8 CONTAINERFILE=Containerfile_3.8 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+        make build.and.push IMAGE_TAG=dev-latest CONTAINERFILE=Containerfile_3.8 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
-    - name: Faz build e push da imagem de prod usando podman via nix
-      run: make build.and.push IMAGE_TAG=prod-latest CONTAINERFILE=$(make print-CONTAINERFILE_PROD) USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+    - name: Faz build e push da imagem 3.9
+      run: |
+        make build.and.push IMAGE_TAG=3.9 CONTAINERFILE=Containerfile_3.9 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+
+    - name: Faz build e push da imagem 3.10
+      run: |
+        make build.and.push IMAGE_TAG=3.10 CONTAINERFILE=Containerfile_3.10 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+
+    - name: Faz build e push da imagem 3.11
+      run: |
+        make build.and.push IMAGE_TAG=3.11 CONTAINERFILE=Containerfile_3.11 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
     - name: Lista imagens
       run: podman images
