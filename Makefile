@@ -13,7 +13,7 @@ CONTAINERFILE_PROD=Containerfile.prod
 print-%  : ; @echo $($*)
 
 build:
-	$(COMPOSER) build --file $(CONTAINERFILE) --tag $(IMAGE) --label org.opencontainers.image.created=$(DATE) --label org.opencontainers.image.revision=$(GIT_REVISION) $(args) .
+	podman build --file $(CONTAINERFILE) --tag $(IMAGE) --label org.opencontainers.image.created=$(DATE) --label org.opencontainers.image.revision=$(GIT_REVISION) $(args) .
 
 pull: login.registry
 	podman pull $(IMAGE)
