@@ -6,7 +6,7 @@ on:
     branchs:
       - 'feature/**'
       - 'hotfix/**'
-      - 'release/**'
+      - 'refactor/**'
 
 jobs:
   build:
@@ -49,19 +49,13 @@ jobs:
 
     - name: Faz build da imagem de dev usando podman via nix
       run: |
-        make build
-        echo "::set-output name=REGISTRY::$(make print-IMAGE_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
+        make build IMAGE_TAG=dev-latest
       shell: bash
       id: dev-build
 
     - name: Faz build da imagem de prod usando podman via nix
       run: |
-        make build.prod
-        echo "::set-output name=REGISTRY::$(make print-IMAGE_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
+        make build IMAGE_TAG=prod-latest CONTAINERFILE=$(make print-CONTAINERFILE_PROD)
       shell: bash
       id: prod-build
 
