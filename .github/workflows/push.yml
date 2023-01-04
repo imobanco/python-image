@@ -5,11 +5,7 @@ on:
   push:
     branchs:
       - master
-  pull_request:
-    branchs:
-      - 'feature/**'
-      - 'hotfix/**'
-      - 'refactor/**'
+
 
 jobs:
   push:
@@ -51,10 +47,10 @@ jobs:
         podman --version
     
     - name: Faz build e push da imagem de dev usando podman via nix
-      run: make build.and.push IMAGE_TAG=foo-dev-latest USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+      run: make build.and.push IMAGE_TAG=dev-latest USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
     - name: Faz build e push da imagem de prod usando podman via nix
-      run: make build.and.push IMAGE_TAG=foo-prod-latest CONTAINERFILE=$(make print-CONTAINERFILE_PROD) USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+      run: make build.and.push IMAGE_TAG=prod-latest CONTAINERFILE=$(make print-CONTAINERFILE_PROD) USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
     - name: Lista imagens
       run: podman images
