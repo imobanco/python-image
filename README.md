@@ -10,3 +10,7 @@ No momento estão sendo construídas as imagens/versões:
 - imobanco/python:3.11
 
 > todas as imagens utilizam a versão slim-buster
+
+# User
+O USER padrão de todas as imagens é o `app_user`. 
+E o WORKDIR é o home dele `/home/app_user/`.
