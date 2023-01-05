@@ -1,12 +1,11 @@
 name: Test builds
 
-
 on:
   pull_request:
     branchs:
       - 'feature/**'
       - 'hotfix/**'
-      - 'release/**'
+      - 'refactor/**'
 
 jobs:
   build:
@@ -47,23 +46,25 @@ jobs:
         nix profile install github:ES-Nix/podman-rootless/83ff27be5616e3029c2aec2de595f86da081e857#podman
         podman --version
 
-    - name: Faz build da imagem de dev usando podman via nix
+    - name: Faz build da imagem 3.8
       run: |
-        make build
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
+        make build IMAGE_TAG=3.8 CONTAINERFILE=Containerfile_3.8
       shell: bash
-      id: dev-build
 
-    - name: Faz build da imagem de prod usando podman via nix
+    - name: Faz build da imagem 3.9
       run: |
-        make build.prod
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
+        make build IMAGE_TAG=3.9 CONTAINERFILE=Containerfile_3.9
       shell: bash
-      id: prod-build
+
+    - name: Faz build da imagem 3.10
+      run: |
+        make build IMAGE_TAG=3.10 CONTAINERFILE=Containerfile_3.10
+      shell: bash
+
+    - name: Faz build da imagem 3.11
+      run: |
+        make build IMAGE_TAG=3.11 CONTAINERFILE=Containerfile_3.11
+      shell: bash
 
     - name: Lista imagens
       run: podman images

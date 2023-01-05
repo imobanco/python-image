@@ -1,6 +1,5 @@
 name: Faz push das imagens
 
-
 on:
   push:
     branchs:
@@ -44,52 +43,23 @@ jobs:
     - run: |
         nix profile install github:ES-Nix/podman-rootless/83ff27be5616e3029c2aec2de595f86da081e857#podman
         podman --version
-
-    - name: Faz build da imagem de dev usando podman via nix
+  
+    - name: Faz build e push da imagem 3.8
       run: |
-        make build
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG_DEV::$(make print-IMAGE_TAG_DEV)"
-      shell: bash
-      id: dev-build
+        make build.and.push IMAGE_TAG=3.8 CONTAINERFILE=Containerfile_3.8 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
+        make build.and.push IMAGE_TAG=dev-latest CONTAINERFILE=Containerfile_3.8 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
-    - name: Faz build da imagem de prod usando podman via nix
+    - name: Faz build e push da imagem 3.9
       run: |
-        make build.prod
-        echo "::set-output name=REGISTRY::$(make print-GITHUB_REGISTRY)"
-        echo "::set-output name=IMAGE_NAME::$(make print-IMAGE_NAME)"
-        echo "::set-output name=IMAGE_TAG_PROD::$(make print-IMAGE_TAG_PROD)"
-      shell: bash
-      id: prod-build
+        make build.and.push IMAGE_TAG=3.9 CONTAINERFILE=Containerfile_3.9 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
-    - name: Log in em Quay.io para push
-      uses: redhat-actions/podman-login@v1.4
-      with:
-          registry: ${{ steps.dev-build.outputs.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Faz build e push da imagem 3.10
+      run: |
+        make build.and.push IMAGE_TAG=3.10 CONTAINERFILE=Containerfile_3.10 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
-    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
-    # in which case 'username' and 'password' can be omitted.
-    - name: Faz push para registry da imagem de dev
-      id: push-to
-      uses: redhat-actions/push-to-registry@v2
-      with:
-        image: ${{ steps.dev-build.outputs.IMAGE_NAME }}
-        registry: ${{ steps.dev-build.outputs.REGISTRY }}
-        tags: ${{ steps.dev-build.outputs.IMAGE_TAG_DEV }}
-    - name: Print image url
-      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
-
-    - name: Faz push para registry da imagem de prod
-      uses: redhat-actions/push-to-registry@v2
-      with:
-        image: ${{ steps.prod-build.outputs.IMAGE_NAME }}
-        registry: ${{ steps.prod-build.outputs.REGISTRY }}
-        tags: ${{ steps.prod-build.outputs.IMAGE_TAG_PROD }}
-    - name: Print image url
-      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+    - name: Faz build e push da imagem 3.11
+      run: |
+        make build.and.push IMAGE_TAG=3.11 CONTAINERFILE=Containerfile_3.11 USERNAME=${{ github.actor }} PASSWORD=${{ secrets.GITHUB_TOKEN }}
 
     - name: Lista imagens
       run: podman images
