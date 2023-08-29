@@ -48,9 +48,8 @@
             test -L .profiles/dev \
             || nix develop .# --profile .profiles/dev --command sh 'echo'
 
-            test -L .profiles/dev-shell-default \
-            || nix build $(nix eval --impure --raw .#devShells."$system".default.drvPath) --out-link .profiles/dev-shell-"$system"-default
-
+            # test -L .profiles/dev-shell-default \
+            # || nix build $(nix eval --impure --raw .#devShells."$system".default.drvPath) --out-link .profiles/dev-shell-"$system"-default
 
             echo "Entering the nix devShell"
           '';
