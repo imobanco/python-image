@@ -11,8 +11,7 @@
       let
 
         pkgsAllowUnfree = import nixpkgs {
-          # system = "x86_64-linux";
-          system = "aarch64-linux";
+          inherit system;
           config = { allowUnfree = true; };
         };
       in
