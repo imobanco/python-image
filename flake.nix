@@ -24,6 +24,10 @@
           inherit system;
           config = { allowUnfree = true; };
         };
+
+        # https://gist.github.com/tpwrules/34db43e0e2e9d0b72d30534ad2cda66d#file-flake-nix-L28
+        pleaseKeepMyInputs = pkgsAllowUnfree.writeTextDir "bin/.please-keep-my-inputs"
+          (builtins.concatStringsSep " " (builtins.attrValues attrs));
       in
       {
 
@@ -33,10 +37,20 @@
             coreutils
             gnumake
             podman-rootless.packages.${system}.podman
+            pleaseKeepMyInputs
           ];
 
           shellHook = ''
             export TMPDIR=/tmp
+
+            test -d .profiles || mkdir -v .profiles
+
+            test -L .profiles/dev \
+            || nix develop .# --profile .profiles/dev --command sh 'echo'
+
+            test -L .profiles/dev-shell-default \
+            || nix build $(nix eval --impure --raw .#devShells."$system".default.drvPath) --out-link .profiles/dev-shell-"$system"-default
+
 
             echo "Entering the nix devShell"
           '';
