@@ -2,11 +2,21 @@
   description = "This is a nix with flakes package";
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs";
+
     flake-utils.url = "github:numtide/flake-utils";
     podman-rootless.url = "github:ES-Nix/podman-rootless/from-nixpkgs";
+
+    podman-rootless.inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, podman-rootless }:
+  outputs = attrs@{
+    self,
+    nixpkgs,
+    flake-utils,
+    podman-rootless
+  }:
     flake-utils.lib.eachDefaultSystem (system:
       let
 
