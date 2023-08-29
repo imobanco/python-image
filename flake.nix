@@ -20,6 +20,7 @@
         devShell = pkgsAllowUnfree.mkShell {
           buildInputs = with pkgsAllowUnfree; [
             bashInteractive
+            coreutils
             gnumake
             podman-rootless.packages.${system}.podman
           ];
