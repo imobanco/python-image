@@ -46,7 +46,7 @@
             test -d .profiles || mkdir -v .profiles
 
             test -L .profiles/dev \
-            || nix develop .# --profile .profiles/dev --command sh 'echo'
+            || nix develop .# --profile .profiles/dev --command echo
 
             # test -L .profiles/dev-shell-default \
             # || nix build $(nix eval --impure --raw .#devShells."$system".default.drvPath) --out-link .profiles/dev-shell-"$system"-default
