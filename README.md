@@ -22,7 +22,6 @@ E o WORKDIR é o home dele `/home/app_user/`.
 ```bash 
 nix flake clone 'git+ssh://git@github.com/imobanco/python-image.git' --dest python-image \
 && cd python-image 1>/dev/null 2>/dev/null \
-&& git checkout feature/adds-aarch64-linux-suport \
 && (direnv --version 1>/dev/null 2>/dev/null && direnv allow) \
 || nix develop --command $SHELL
 ```
