@@ -14,3 +14,14 @@ No momento estão sendo construídas as imagens/versões:
 # User
 O USER padrão de todas as imagens é o `app_user`. 
 E o WORKDIR é o home dele `/home/app_user/`.
+
+
+## Desenvolvimento local
+
+
+```bash 
+nix flake clone 'git+ssh://git@github.com/imobanco/python-image.git' --dest python-image \
+&& cd python-image 1>/dev/null 2>/dev/null \
+&& (direnv --version 1>/dev/null 2>/dev/null && direnv allow) \
+|| nix develop --command $SHELL
+```
