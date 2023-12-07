@@ -8,7 +8,6 @@
     podman-rootless.url = "github:ES-Nix/podman-rootless/from-nixpkgs";
 
     podman-rootless.inputs.nixpkgs.follows = "nixpkgs";
-    flake-utils.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = attrs@{
@@ -30,6 +29,9 @@
           (builtins.concatStringsSep " " (builtins.attrValues attrs));
       in
       {
+
+        # nix fmt
+        formatter = pkgsAllowUnfree.nixpkgs-fmt;
 
         devShells.default = pkgsAllowUnfree.mkShell {
           buildInputs = with pkgsAllowUnfree; [
